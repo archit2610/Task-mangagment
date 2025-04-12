@@ -24,11 +24,11 @@ router.route("/register").post(userRegisterValidator(), validate, registerUser);
 router.route("/login").post(userLoginValidator(), validate, loginUser);
 router.route("/logout").get(auth, logoutUser);
 router.route("/verify/:token").get(verifyEmail);
-router.route("resendEmailVerification").get(resendEmailVerification);
-router.route("/forgotpassword").post(userForgotPasswordValidator(), validate, forgotPasswordRequest);
-router.route("/forgotpassword/:token").post(userResetForgottenPasswordValidator(),validate,resetForgottenPassword);
-router.route("/changecurrentpassword").post(userChangeCurrentPasswordValidator(), validate, changeCurrentPassword);
-router.route("/refreshaccesstoken").get(auth, refreshAccessToken);
+router.route("resend-EmailVerification").get(resendEmailVerification);
+router.route("/forgot-password").post(userForgotPasswordValidator(), validate, forgotPasswordRequest);
+router.route("/forgot-password/:token").post(userResetForgottenPasswordValidator(),validate,resetForgottenPassword);
+router.route("/change-currentpassword").post(userChangeCurrentPasswordValidator(), validate, changeCurrentPassword);
+router.route("/refresh-accesstoken").get(auth, refreshAccessToken);
 router.route("/profile").get(auth, getCurrentUser);
 
 export default router;

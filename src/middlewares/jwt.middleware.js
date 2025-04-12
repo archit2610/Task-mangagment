@@ -2,6 +2,7 @@
  import { ApiError } from "../utils/api-error.js";
  import jwt from "jsonwebtoken";
  import { User } from "../models/user.models.js";
+ import { Project } from "../models/project.models.js";
  
  export const auth = asyncHandler(async (req, res, next) => {
     const token = req.cookies.accessToken ?? req.body.accessToken;
@@ -19,6 +20,18 @@
     } catch (err) {
       throw new ApiError(401, "Invalid token");
     }
+  });
+  
+   export const projectmiddeleware = asyncHandler(async (req, res, next) => {
+    const { projectId } = req.params;
+    const project = await Project.findById(projectId);
+    
+    if (!project) {
+      throw new ApiError(404, "Project not found");
+    }
+  
+    req.project = project;
+    next();
   });
   
   

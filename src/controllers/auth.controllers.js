@@ -8,7 +8,7 @@ import {options} from "../utils/constants.js"
 
 const registerUser = asyncHandler(async (req, res) => {
 
-  const { email, username, password, role } = req.body;
+  const { email, username, password } = req.body;
 
   if (!email || !username || !password){
     throw new ApiError (400,"All fiels are required")
@@ -41,7 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
     ),
 });
 
-console.log(`/api/v1/healthcheck/verify/${token.unHashedToken}`);
+console.log('link sent in mail: ',`/api/v1/healthcheck/verify/${token.unHashedToken}`);
 
 const newuser =  await User.findById(user._id);
 
@@ -50,7 +50,7 @@ if (!newuser){
 }
 
 res.status(200).json(new ApiResponse(200,newuser,"User registered successfully"));
-
+console.log(newuser.username, 'is registered successfully');
 });
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -110,7 +110,7 @@ const logoutUser = asyncHandler(async (req, res) => {
   .clearCookie("accessToken",options)
   .clearCookie("refreshToken",options)
   .json(new ApiResponse(200,{},'User logged out succesfully'))
-  //validation
+
 });
 
 const verifyEmail = asyncHandler(async (req, res) => {
@@ -137,7 +137,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
   await user.save();
 
   res.status(200).json(new ApiResponse,{},'user verified  successfully')
-  console.log(user.isEmailVerified);
+  console.log( 'Is user email verified: ', user.isEmailVerified);
 });
 
 const resendEmailVerification = asyncHandler(async (req, res) => {
@@ -158,8 +158,7 @@ const resendEmailVerification = asyncHandler(async (req, res) => {
     ),
 });
 
-console.log(`/api/v1/healthcheck/verify/${token.unHashedToken}`);
-  //validation
+console.log( 'Link send in email', `/api/v1/healthcheck/verify/${token.unHashedToken}`);
 });
 
 const resetForgottenPassword = asyncHandler(async (req, res) => {
@@ -190,7 +189,8 @@ const resetForgottenPassword = asyncHandler(async (req, res) => {
   await user.save();
 
   res.status(200).json(new ApiResponse,{},'password changed successfully')
-  console.log(user.password);
+  console.log('hashed password' ,user.password);
+  console.log('unhashed password', newPassword);
 });
 
 
@@ -259,7 +259,7 @@ const forgotPasswordRequest = asyncHandler(async (req, res) => {
     ),
 });
 
-console.log(`/api/v1/healthcheck/forgotpassword/${token.unHashedToken}`);
+console.log('email sent', `/api/v1/healthcheck/forgotpassword/${token.unHashedToken}`);
   
 });
 
@@ -277,14 +277,15 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
   user.password = newPassword;
   await user.save()
 
-  console.log('New password: ',user.password)
+  console.log('New password: ',user.password);
+  console.log('unhashed password', newPassword);
   //validation
 });
 
 const getCurrentUser = asyncHandler(async (req, res) => {
   const user =  await User.findById(req.user._id);
   res.status(200).json(200,{user},'User fetched succesfully')
-  //validation
+
 });
 
 export {
