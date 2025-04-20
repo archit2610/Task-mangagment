@@ -3,6 +3,7 @@
  import jwt from "jsonwebtoken";
  import { User } from "../models/user.models.js";
  import { Project } from "../models/project.models.js";
+ import { ProjectNote } from '../models/note.models.js'
  
  export const auth = asyncHandler(async (req, res, next) => {
     const token = req.cookies.accessToken ?? req.body.accessToken;
@@ -31,6 +32,18 @@
     }
   
     req.project = project;
+    next();
+  });
+
+  export const notemiddeleware = asyncHandler(async (req, res, next) => {
+    const { noteId } = req.params;
+    const note = await ProjectNote.findById(notetId);
+    
+    if (!note) {
+      throw new ApiError(404, "Project not found");
+    }
+  
+    req.note = note;
     next();
   });
   
