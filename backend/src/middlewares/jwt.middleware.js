@@ -27,6 +27,9 @@
     const { projectId } = req.params;
     const project = await Project.findById(projectId);
     
+    console.log(projectId)
+    console.log(project)
+    
     if (!project) {
       throw new ApiError(404, "Project not found");
     }
@@ -37,10 +40,10 @@
 
   export const notemiddeleware = asyncHandler(async (req, res, next) => {
     const { noteId } = req.params;
-    const note = await ProjectNote.findById(notetId);
-    
+    const note = await ProjectNote.findById(noteId);
+    console.log(note)
     if (!note) {
-      throw new ApiError(404, "Project not found");
+      throw new ApiError(404, "Note not found");
     }
   
     req.note = note;

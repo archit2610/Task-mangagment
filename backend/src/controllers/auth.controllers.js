@@ -80,7 +80,7 @@ const loginUser = asyncHandler(async (req, res) => {
   user.refreshToken = refreshtoken;
   await user.save()
 
-  res.status(400)
+  res.status(200)
   .cookie("accessToken",accesstoken,options)
   .cookie("refreshToken",refreshtoken,options)
   .json(new ApiResponse(200,{

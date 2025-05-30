@@ -5,7 +5,7 @@ import { asyncHandler } from "../utils/async-handler.js";
 
 
 const getNotes = asyncHandler(async (req, res) => {
-const notes = await ProjectNote.find({ user: req.user._id }).populate("project");
+const notes = await ProjectNote.find({ createdBy: req.user._id }).populate("project");
 
  if (!notes || notes.length === 0) {
     return res.status(200).json(
@@ -38,30 +38,30 @@ const userId = req.user._id;
 if(!projectId){
   throw new ApiError (400,'Select a project before creating a note')
 }
+
+//console.log('Model name check:', ProjectNote.modelName);
+
 const Note = await ProjectNote.create({
   project: projectId,
   createdBy: userId,
   content: content,
 });
 
-res.status(200).json(new ApiResponse (200,{note}, `New note created`))
+console.log(Note)
+res.status(200).json(new ApiResponse (200,{Note}, `New note created`))
 });
 
 const updateNote = asyncHandler(async (req, res) => {
-  const { oldcontent,newcontent } = req.body;
-  const  { projectId } = req.params;
-  const userId = req.user._id;
+  const {content } = req.body;
+  const { noteId } = req.params
   
-  const note =  await ProjectNote.find({
-    project: projectId,
-    createdBy: userId,
-    content: oldcontent,
-  });
+  const note = await ProjectNote.findById(noteId);
   
   if(!note) {
-    throw new error (400,'There is no note to update')
+    throw new ApiError (400,'There is no note to update')
   } else {
-    note.content = newcontent;
+    note.content = content;
+    console.log(note)
     await note.save();
   }
   

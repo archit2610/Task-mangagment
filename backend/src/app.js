@@ -14,6 +14,6 @@ import Note from './routes/note.routes.js';
 app.use("/api/v1/healthcheck", healthCheckRouter)
 app.use("/api/v1/healthcheck", Authentication)
 app.use("/api/v1/healthcheck/project", Project)
-app.use("/api/v1/project/:projectId/note", Note)
+app.use("/api/v1/healthcheck/project/:projectId/note", Note)
 
 export default app;
