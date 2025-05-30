@@ -5,7 +5,8 @@ import { asyncHandler } from "../utils/async-handler.js";
 
 
 const getNotes = asyncHandler(async (req, res) => {
-const notes = await ProjectNote.find({ createdBy: req.user._id }).populate("project");
+const { projectId } = req.params;
+const notes = await ProjectNote.find({ createdBy: req.user._id,project: projectId }).populate("project");
 
  if (!notes || notes.length === 0) {
     return res.status(200).json(
